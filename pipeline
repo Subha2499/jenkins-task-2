@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+    stages {
+        stage('Building My Java App') { 
+            steps {
+                echo "This is stage used to build my source code"                
+            }
+        }
+        
+    }
+    post {
+        failure {
+            emailext (
+                subject: "Jenkins Build Failed: ${currentBuild.fullDisplayName}",
+                body: "The build failed. Please check the Jenkins console for details.",
+                to: "subhapvr@gmail.com"
+            )
+        }
+        success {
+            emailext (
+                subject: "Jenkins Build Successful: ${currentBuild.fullDisplayName}",
+                body: "The Pipeline was successful.",
+                to: "subhapvr@gmail.com"
+            )
+        }
+    }
+
+}
